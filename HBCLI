@@ -1,0 +1,26 @@
+#!/bin/bash
+# Replace with your source folder
+SRC="Movies"
+
+# Replace with your destination folder
+DEST="NewStorage"
+
+# This is my plex folder to where I moved the converted file (optional)
+MVDIR="media_drive/TV"
+
+# Handbrake CLI command
+HBCLI="HandBrakeCLI "
+
+# Options for the converted file, I always include English and Spanish for audio and subtitles
+# you must escape the quotes if your profile has spaces. I use High Profile wich gives me 
+# a file size between 5 and 10 GB for full length movies and around 3 GB for TV episodes both blu-ray
+options=" --preset=\"High Profile\" --audio-lang-list=eng,spa --subtitle-lang-list=eng,spa"
+
+# Loop thru all files in Source folder, get the file name and process the conversion
+# optionally move the output file to its final destination. Source file is not removed.
+for file in "$SRC"/*
+   do
+      filename=$(basename $file)
+      $HBCLI -i "$file" -o "$DEST"/"$filename" "$options"
+      mv "$DEST"/"$filename" "$MVDIR"
+   done
